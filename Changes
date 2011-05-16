@@ -1,5 +1,11 @@
 Revision history for Bio-Tools-Primer3Redux
 
+0.02      2011-05-16 12:45:03 America/Chicago
+
+ * Fix test count, in case an older version of BioPerl is used
+   (fschwach)
+ * Small updates to Build.PL
+
 0.01      2011-04-29 15:46:42 America/Chicago
 
  * initial version
