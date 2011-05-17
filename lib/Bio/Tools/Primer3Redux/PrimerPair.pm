@@ -17,7 +17,7 @@ BEGIN {
   $Bio::Tools::Primer3Redux::PrimerPair::AUTHORITY = 'cpan:CJFIELDS';
 }
 BEGIN {
-  $Bio::Tools::Primer3Redux::PrimerPair::VERSION = '0.02';
+  $Bio::Tools::Primer3Redux::PrimerPair::VERSION = '0.03';
 }
 
 use strict;
