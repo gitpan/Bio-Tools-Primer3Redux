@@ -17,7 +17,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Bio-Tools-Primer3Redux
   homepage: http://search.cpan.org/dist/Bio-Tools-Primer3Redux
   repository: git://github.com/cjfields/bio-tools-primer3redux.git
-version: 0.03
+version: 0.04
 x_Dist_Zilla:
   plugins:
     -

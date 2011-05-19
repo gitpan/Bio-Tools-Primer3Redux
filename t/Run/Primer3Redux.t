@@ -15,8 +15,10 @@ BEGIN {
 
     # num tests: see SKIP block for requires_executable
     # + 5 before the block
-    test_begin(-tests => 92);
-    use_ok('Bio::Tools::Run::Primer3Redux');
+    test_begin( -tests => 116);
+
+    # this is run in 00-compile.t
+    #use_ok('Bio::Tools::Run::Primer3Redux');
 }
 
 my $verbose = $ENV{BIOPERLDEBUG} || 0;
@@ -95,6 +97,23 @@ my @tests = (
         }
     },
 
+  {
+    desc   => "pick PCR primers but cause warnings and error",
+    p3_version => 2,
+    params => {
+      'PRIMER_TASK'               => 'pick_pcr_primers',
+      'PRIMER_SALT_CORRECTIONS'   => 1,
+      'PRIMER_TM_FORMULA'         => 1,
+      'PRIMER_EXPLAIN_FLAG'       => 1,
+      'SEQUENCE_PRIMER'          => 'AAAAAAAAAAAAAAAAAAA', # this is not on the SEQUENCE_TEMPLATE, so will cause error
+    },
+    expect => {
+#--------------------------------------------------
+#       warnings => 1,
+#--------------------------------------------------
+      errors => 1,
+    }
+  },
 );
 
 ok( $primer3 = Bio::Tools::Run::Primer3Redux->new(), "can instantiate object" );
@@ -134,15 +153,25 @@ SKIP: {
 
             while ( my $result = $parser->next_result ) {
                 isa_ok( $result, 'Bio::Tools::Primer3Redux::Result' );
+                my $expect_warnings = $test->{expect}{warnings};
+                SKIP:{
+                  skip ("test warnings if expectation defined",1) if !defined $expect_warnings;
+                  is ($result->warnings, $expect_warnings, "got the expected number of primer design warnings");
+                }
+                my $expect_errors = $test->{expect}{errors};
+                SKIP:{
+                  skip ("test errors if expectation defined",1) if !defined $expect_errors;
+                    is ($result->errors, $expect_errors, "got the expected number of primer design errors");
+                }
                 my $num_pairs = $test->{expect}{num_pairs};
                 is( $result->num_primer_pairs, $num_pairs,
-                    "Got expected number of pairs: " . $num_pairs );
+                    "Got expected number of pairs: " . (defined($num_pairs) ?  $num_pairs : 'undef') );
                 my $ps = $result->get_processed_seq;
                 isa_ok( $ps, 'Bio::Seq' );
 
                 SKIP: {
                     skip( "tests that require >0 primer pairs", 12 )
-                      if $result->num_primer_pairs == 0;
+                      if ! $result->num_primer_pairs;
                     my $pair = $result->next_primer_pair;
                     isa_ok( $pair, 'Bio::Tools::Primer3Redux::PrimerPair' );
                     isa_ok( $pair, 'Bio::SeqFeature::Generic' );
@@ -150,8 +179,8 @@ SKIP: {
                     my ( $fp, $rp ) =
                       ( $pair->forward_primer, $pair->reverse_primer );
 
-                 # can't really do exact checks here, but we can certainly check
-                 # various things about these...
+                    # can't really do exact checks here, but we can certainly
+                    # check various things about these...
                     isa_ok( $fp, 'Bio::Tools::Primer3Redux::Primer' );
                     isa_ok( $fp, 'Bio::SeqFeature::Generic' );
                     isa_ok( $rp, 'Bio::Tools::Primer3Redux::Primer' );

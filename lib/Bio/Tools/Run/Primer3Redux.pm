@@ -14,7 +14,7 @@ BEGIN {
   $Bio::Tools::Run::Primer3Redux::AUTHORITY = 'cpan:CJFIELDS';
 }
 BEGIN {
-  $Bio::Tools::Run::Primer3Redux::VERSION = '0.03';
+  $Bio::Tools::Run::Primer3Redux::VERSION = '0.04';
 }
 
 use base qw(Bio::Root::Root Bio::Tools::Run::WrapperBase);

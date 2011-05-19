@@ -12,8 +12,9 @@ package Bio::Tools::Primer3Redux;
 BEGIN {
   $Bio::Tools::Primer3Redux::AUTHORITY = 'cpan:CJFIELDS';
 }
-
-our $VERSION = '0.01';
+BEGIN {
+  $Bio::Tools::Primer3Redux::VERSION = '0.04';
+}
 
 use strict;
 use warnings;
