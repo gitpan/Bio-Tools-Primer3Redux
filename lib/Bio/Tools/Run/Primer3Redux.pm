@@ -14,7 +14,7 @@ BEGIN {
   $Bio::Tools::Run::Primer3Redux::AUTHORITY = 'cpan:CJFIELDS';
 }
 BEGIN {
-  $Bio::Tools::Run::Primer3Redux::VERSION = '0.07';
+  $Bio::Tools::Run::Primer3Redux::VERSION = '0.08';
 }
 
 use base qw(Bio::Root::Root Bio::Tools::Run::WrapperBase);
@@ -326,11 +326,13 @@ sub new {
         $self->program_dir($path);
         $self->program_name($prog);
     }
+
     if ($verbose) {
         $self->{'verbose'}=1;
     }
     # determine the correct set of parameters to use (v1 vs v2)
-    my $v = ($self->executable) ?  $self->version : $DEFAULT_VERSION;
+
+    my $v =  eval {$self->executable; 1;} ?  $self->version : $DEFAULT_VERSION;
 
     if (($p3_settings_file)&&($v=~/^2/)){ #apply $p3_settings_file only if version>2
         $self->p3_settings_file($p3_settings_file);
