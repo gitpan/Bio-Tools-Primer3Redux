@@ -38,7 +38,7 @@
          "web" : "http://github.com/cjfields/bio-tools-primer3redux"
       }
    },
-   "version" : "0.08",
+   "version" : "0.09",
    "x_Dist_Zilla" : {
       "plugins" : [
          {
